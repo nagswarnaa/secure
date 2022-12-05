@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AdminDashboard from "./components/Administrators/AdminDashboard";
 import CreateGroups from "./components/GroupRegister/CreateGroups";
 import GroupHomepage from "./components/GroupRegister/GroupHomepage";
@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 import PageNotFound from "./components/shared/PageNotFound";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
-import {AuthProvider} from "./components/context/AuthContext";
+import { AuthProvider } from "./components/context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 
@@ -19,34 +19,35 @@ const App = () => {
 
     return (
         <AuthProvider>
-            <Navbar/>
+            <Navbar />
             <Routes>
-                <Route path="/" element={<Signup/>}/>
-                <Route path="/login" element={<Signin/>}/>
-                <Route path="/creategroups" element={<ProtectedRoute/>}>
-                    <Route path="/creategroups" element={<CreateGroups/>}/>
+                <Route path="/" element={<Signup />} />
+                <Route path="/login" element={<Signin />} />
+                <Route path="/creategroups" element={<ProtectedRoute />}>
+                    <Route path="/creategroups" element={<CreateGroups />} />
                 </Route>
-                <Route path="/groupregister" element={<ProtectedRoute/>}>
-                    <Route path="/groupregister" element={<GroupRegister/>}/>
+                <Route path="/inviteingroup" element={<ProtectedRoute />}>
+                    <Route path="/inviteingroup" element={<InviteInGroup />} />
                 </Route>
-                <Route path="/inviteingroup" element={<ProtectedRoute/>}>
-                    <Route path="/inviteingroup" element={<InviteInGroup/>}/>
-                </Route>
-
-                <Route path="/groupintro" element={<ProtectedRoute/>}>
-                    <Route path="/groupintro" element={<GroupIntro/>}/>
+                <Route path="/groupregister" exact element={<ProtectedRoute />}>
+                    <Route path="/groupregister" element={<GroupRegister />} />
                 </Route>
 
-                <Route path="/grouphomepage/*" element={<ProtectedRoute/>}>
-                    <Route path="/grouphomepage/*" element={<GroupHomepage/>}/>
+
+                <Route path="/groupintro" element={<ProtectedRoute />}>
+                    <Route path="/groupintro" element={<GroupIntro />} />
                 </Route>
-                <Route path="/dashboard" element={<ProtectedRoute/>}>
-                    <Route exact path="/dashboard" element={<Homepage/>}/>
+
+                <Route path="/grouphomepage/*" element={<ProtectedRoute />}>
+                    <Route path="/grouphomepage/*" element={<GroupHomepage />} />
                 </Route>
-                <Route path="/admindash" element={<ProtectedRoute/>}>
-                    <Route exact path="/admindash" element={<AdminDashboard/>}/>
+                <Route path="/dashboard" element={<ProtectedRoute />}>
+                    <Route exact path="/dashboard" element={<Homepage />} />
                 </Route>
-                <Route path="/*" element={<PageNotFound/>}/>
+                <Route path="/admindash" element={<ProtectedRoute />}>
+                    <Route exact path="/admindash" element={<AdminDashboard />} />
+                </Route>
+                <Route path="/*" element={<PageNotFound />} />
             </Routes>
         </AuthProvider>
     );

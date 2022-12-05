@@ -1,17 +1,17 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "./context/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 const Signup = () => {
     const Navigate = useNavigate();
-    const {currentUser, signup, getCurrentUser} = useAuth()
+    const { currentUser, signup, getCurrentUser } = useAuth()
     const [error, setErrorState] = useState(false)
     const [errorField, setErrorField] = useState("Error")
     const signInPageHandler = () => {
         Navigate("login");
     };
     getCurrentUser().then(res => {
-        if (currentUser){
+        if (currentUser) {
             Navigate("/dashboard")
         }
     })
@@ -21,6 +21,13 @@ const Signup = () => {
         const username = e.target[0].value;
         const email = e.target[1].value;
         const password = e.target[2].value;
+        let validation = (username === '' ? false : true)
+        validation = (password.length < 8 || password.length > 16 ? false : true)
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        validation = re.test(email)
+        if (!validation) {
+            Navigate("/gh")
+        }
         signup(username, password, email).then((cred) => {
             console.log(cred)
             Navigate("/dashboard")
@@ -68,7 +75,7 @@ const Signup = () => {
                     </div>
 
                     {error && <div className="text-center mt-6">
-                        <input disabled className="error"  style={{color: "red", textAlign: "right"}} value={errorField}/>
+                        <input disabled className="error" style={{ color: "red", textAlign: "right" }} value={errorField} />
                     </div>}
                     <div className="text-center mt-6">
                         <button type="submit" className="py-3 w-64 text-xl text-white bg-blue-500 rounded-2xl hover:bg-blue-600">
@@ -80,9 +87,9 @@ const Signup = () => {
                                 className="underline cursor-pointer"
                                 onClick={signInPageHandler}
                             >
-              {" "}
+                                {" "}
                                 Sign In
-            </span>
+                            </span>
                         </p>
                     </div>
                 </form>

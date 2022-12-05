@@ -17,9 +17,9 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "fs": "0.0.1-security",
-    "mongoose": "^6.2.8",
+    "mongoose": "^6.7.3",
     "node-pre-gyp": "^0.17.0",
-    "passport": "^0.5.2",
+    "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {

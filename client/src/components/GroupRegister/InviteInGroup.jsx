@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useLocation} from "react-router";
-import {useAuth} from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 const InviteInGroup = (props) => {
-    const {getAllUsers, currentUser} = useAuth()
+    const { getAllUsers, currentUser } = useAuth()
     const Navigate = useNavigate();
     const location = useLocation();
     const title = location.state;
-    if (!title){
+    if (!title) {
         Navigate("groupregister")
     }
     console.log(title)
@@ -19,7 +19,7 @@ const InviteInGroup = (props) => {
             setUsers([])
             res.data.forEach(user => {
                 const username = user.username
-                if (username!==currentUser.username){
+                if (username !== currentUser.username) {
                     setUsers(usersList => [...usersList, username])
                 }
             })
@@ -29,14 +29,14 @@ const InviteInGroup = (props) => {
 
     const nextBtnHandler = (props) => {
 
-        Navigate("/groupintro", {state: {title:title, users:invited}});
+        Navigate("/groupintro", { state: { title: title, users: invited } });
     };
 
-    function add(event){
+    function add(event) {
         event.preventDefault();
         console.log(event)
         const user = event.target[0].value
-        setUsers(users.filter(u => u!==user))
+        setUsers(users.filter(u => u !== user))
         setInvited(usersList => [...usersList, user])
     }
 
@@ -50,10 +50,10 @@ const InviteInGroup = (props) => {
         <div className="min-h-screen bg-gray-200 flex justify-center pt-20">
             <div className="text-center">
                 <h1 className="text-gray-800 text-4xl font-bold pb-4">
-                    Choose Who to Invite
+                    Select users
                 </h1>
                 <p className="text-gray-500 text-xl pb-10 w-[40rem] ">
-                    Once you’re finished press next.
+                    pick from list
                 </p>
                 <form onSubmit={add}>
                     <select
@@ -63,7 +63,7 @@ const InviteInGroup = (props) => {
                         {users.map(user => <option value={user}>{user}</option>)}
                     </select>
                     <button type="submit"
-                            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full mr-4">
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full mr-4">
                         ADD
                     </button>
                 </form>
@@ -71,21 +71,21 @@ const InviteInGroup = (props) => {
 
                 {invited.map(user => <div
                     className="block bg-green-500 text-white font-bold text-xl py-3 px-4 rounded-lg w-full border outline-none  mt-8 mb-2"
-                    style={{width: "100%", textAlign: "center", margin: "10px"}}>
-                    <p style={{display: "inline-block", width: "10%"}} className="row-span-1">{user}</p>
-                    <button onClick={() => remove(user)} style={{display: "inline-block"}}
-                            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                    style={{ width: "100%", textAlign: "center", margin: "10px" }}>
+                    <p style={{ display: "inline-block", width: "10%" }} className="row-span-1">{user}</p>
+                    <button onClick={() => remove(user)} style={{ display: "inline-block" }}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
                         REMOVE
                     </button>
                 </div>)}
 
 
                 <div className="grid grid-cols-2 gap-x-96">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
+                    <button className="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full">
                         CANCEL
                     </button>
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
+                        className="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full"
                         onClick={nextBtnHandler}
                     >
                         NEXT

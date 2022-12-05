@@ -46,10 +46,10 @@ const storage = multer.diskStorage({
     cb(
       null,
       file.fieldname +
-        "-" +
-        Date.now() +
-        "." +
-        file.originalname.split(".").pop()
+      "-" +
+      Date.now() +
+      "." +
+      file.originalname.split(".").pop()
     );
   },
 });
@@ -57,7 +57,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/groups",
+  "mongodb+srv://nagaraju:nagaraju@cluster0.p72zjdk.mongodb.net/?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -120,6 +120,34 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+
+const adminEmail = "admin";
+const password = "password";
+User.findOne({ username: adminEmail }).then((user) => {
+  if (!user) {
+    bcrypt.hash(password, 10).then((hashedPassword) => {
+      const admin = User({
+        username: adminEmail,
+        email: "admin@gmail.com",
+        password: hashedPassword,
+        role: "admin",
+      });
+      admin
+        .save()
+        .then(
+          console.log(
+            "Admin created",
+            "Email: " + adminEmail,
+            "Password: " + password
+          )
+        );
+    });
+  } else {
+    console.log(user);
+  }
+});
+
+
 app.post("/register", (req, res) => {
   console.log("new user");
   User.findOne({ username: req.body.username }, async (err, doc) => {
@@ -141,7 +169,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/logout", (req, res) => {
+app.post("/signout", (req, res) => {
   req.logout();
   res.send("logged out");
 });
@@ -340,7 +368,7 @@ app.post("/delete_member", (req, res) => {
   if (!req.user) {
     res.status(400);
     res.send("Authentication failed");
-  }else{
+  } else {
     Group.findOne({ _id: new ObjectId(req.body.group) }).then((group) => {
       console.log(group);
       if (group && (group.admin == req.user.username || req.user.role == "admin" || req.user.username === req.body.member)) {
@@ -359,7 +387,7 @@ app.post("/add_member", (req, res) => {
   if (!req.user) {
     res.status(400);
     res.send("Authentication failed");
-  }else{
+  } else {
     Group.findOne({ _id: new ObjectId(req.body.group) }).then((group) => {
       console.log(group);
       if (group && (group.admin == req.user.username || req.user.role == "admin")) {
@@ -378,13 +406,14 @@ app.post("/delete_group", (req, res) => {
   if (!req.user) {
     res.status(400);
     res.send("Authentication failed");
-  }else{
+  } else {
     Group.findOne({ _id: new ObjectId(req.body.group) }).then((group) => {
       console.log(group);
       if (group && (group.admin == req.user.username || req.user.role == "admin")) {
-        Group.deleteOne({ _id: new ObjectId(req.body.group)}).then((result) => {
+        Group.deleteOne({ _id: new ObjectId(req.body.group) }).then((result) => {
           console.log(result)
-          res.send("Group Deleted")});
+          res.send("Group Deleted")
+        });
       } else {
         res.status(400);
         res.send("Authentication failed");

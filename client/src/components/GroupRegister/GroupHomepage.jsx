@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import {useAuth} from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import PageNotFound from "../shared/PageNotFound";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 const GroupHomepage = () => {
     const [tabsCount, setTabsCount] = useState(1);
@@ -23,28 +23,28 @@ const GroupHomepage = () => {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-            getGroup(groupID).then(res => {
-                const g = res.data;
-                setGroup(g)
-                setTabsCount(2)
-                getAllUsers().then(res => {
-                    setUsers([])
-                    res.data.forEach(user => {
-                        const username = user.username
-                        console.log(username)
-                        if (username !== currentUser.username && (!g.members.some(member => member === username))) {
-                            setUsers(usersList => [...usersList, username])
-                        }
-                    })
-                }).catch(error => {
-                    console.log(error)
+        getGroup(groupID).then(res => {
+            const g = res.data;
+            setGroup(g)
+            setTabsCount(2)
+            getAllUsers().then(res => {
+                setUsers([])
+                res.data.forEach(user => {
+                    const username = user.username
+                    console.log(username)
+                    if (username !== currentUser.username && (!g.members.some(member => member === username))) {
+                        setUsers(usersList => [...usersList, username])
+                    }
                 })
-
             }).catch(error => {
-                setTabsCount(-2)
+                console.log(error)
             })
 
-        }
+        }).catch(error => {
+            setTabsCount(-2)
+        })
+
+    }
         , [])
 
 
@@ -72,10 +72,6 @@ const GroupHomepage = () => {
         setFile(event.target.files[0])
     }
 
-
-    console.log(group)
-    console.log(users)
-
     function deletePost(filename) {
         deletePostByUser(filename).then(res => {
             console.log(res)
@@ -84,7 +80,7 @@ const GroupHomepage = () => {
     }
 
     function onRemoveMemberBtnClicked(member) {
-        removeUserFromGroup({group: groupID, member: member}).then(res => {
+        removeUserFromGroup({ group: groupID, member: member }).then(res => {
             console.log(res)
             navigate("/")
         })
@@ -92,14 +88,14 @@ const GroupHomepage = () => {
 
     function addMemberBtnClicked(event) {
         event.preventDefault()
-        addMemberToGroup({group: groupID, member: event.target[0].value}).then(res => {
+        addMemberToGroup({ group: groupID, member: event.target[0].value }).then(res => {
             console.log(res)
             window.location.reload(false)
         })
     }
 
     function onDeleteGroupBtnClicked(username) {
-        deleteGroup({group: groupID, member: username}).then(res => {
+        deleteGroup({ group: groupID, member: username }).then(res => {
             console.log(res)
             navigate("/dashboard")
         })
@@ -108,13 +104,12 @@ const GroupHomepage = () => {
     return (
         <div className="bg-gray-200 h-full">
             {/* Tabs */}
-            {tabsCount === -2 && <PageNotFound/>}
+            {tabsCount === -2 && <PageNotFound />}
             {tabsCount >= 0 && <div className="bg-blue-200">
                 <nav className="flex flex-col sm:flex-row">
                     <button
-                        className={` ${
-                            tabsCount === 0 ? "border-b-2 font-medium border-blue-500" : ""
-                        } "text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"`}
+                        className={` ${tabsCount === 0 ? "border-b-2 font-medium border-blue-500" : ""
+                            } "text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"`}
                         onClick={() => {
                             setTabsCount(0);
                         }}
@@ -122,9 +117,8 @@ const GroupHomepage = () => {
                         Feed
                     </button>
                     <button
-                        className={` ${
-                            tabsCount === 2 ? "border-b-2 font-medium border-blue-500" : ""
-                        } "text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"`}
+                        className={` ${tabsCount === 2 ? "border-b-2 font-medium border-blue-500" : ""
+                            } "text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"`}
                         onClick={() => {
                             setTabsCount(2);
                         }}
@@ -167,15 +161,15 @@ const GroupHomepage = () => {
                                                     />
                                                 </svg>
                                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                    <span className="font-semibold">Click to upload</span>{" "}
-                                                    or drag and drop
+                                                    <span className="font-semibold">Click here to upload</span>{" "}
+                                                    or you can drop here to upload
                                                 </p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                    SVG, PNG, JPG or GIF (MAX. 800x400px)
+                                                    Please select file of any format
                                                 </p>
                                             </div>
                                             <input id="dropzone-file" type="file" className="hidden" required
-                                                   onChange={changeFile}/>
+                                                onChange={changeFile} />
                                         </label>
                                     </div>
                                 </div>
@@ -184,12 +178,12 @@ const GroupHomepage = () => {
                                     <div className="border rounded-lg p-4 bg-gray-200">
                                         <input
                                             type="text"
-                                            placeholder="Title of the post"
+                                            placeholder="Post Title"
                                             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
                                         />
                                         <input
                                             type="text"
-                                            placeholder="Write something about your post"
+                                            placeholder="Description about post"
                                             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none mt-2"
                                         />
                                     </div>
@@ -211,10 +205,10 @@ const GroupHomepage = () => {
                     {/* posts */}
 
                     {group.documents.map(file => <div key={file.filename}
-                                                      className="bg-gray-200 flex justify-center items-center ">
+                        className="bg-gray-200 flex justify-center items-center ">
                         <div className="w-2/3 flex flex-col bg-white shadow-lg rounded-lg overflow-hidden">
                             <div className="bg-gray-200 text-gray-700 text-lg px-6 py-4">
-                                {file.title}
+                                {file.filename}
                             </div>
 
                             <div className="flex justify-between items-center px-6 py-4">
@@ -427,20 +421,20 @@ const GroupHomepage = () => {
                             </p>
                         </div>
                         <div className="space-y-4">
-                            <hr/>
+                            <hr />
                             <h1 className="text-blue-500">MEMBERS</h1>
-                            <hr/>
+                            <hr />
                             {group.members.map(member =>
                                 <div className="w-full" key={member}>
                                     <div className="flex items-stretch ">
                                         <p
                                             className="block text-sm py-3 px-4 rounded-lg w-2/3 border outline-none">{member}</p>
                                         {(currentUser.role === "admin" || group.admin === currentUser.username) &&
-                                        currentUser.username !== member
-                                        && <button
-                                            onClick={() => onRemoveMemberBtnClicked(member)}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 mx-2 rounded"> -
-                                        </button>
+                                            currentUser.username !== member
+                                            && <button
+                                                onClick={() => onRemoveMemberBtnClicked(member)}
+                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 mx-2 rounded"> -
+                                            </button>
                                         }
                                     </div>
                                 </div>
@@ -449,7 +443,7 @@ const GroupHomepage = () => {
                             {group.admin === currentUser.username && <div>
                                 <form onSubmit={addMemberBtnClicked}>
                                     <h1 className="text-blue-500">Add Members:</h1>
-                                    <hr/>
+                                    <hr />
                                     <select
                                         placeholder="Select members"
                                         className="block text-sm py-3 px-4 rounded-lg w-full border outline-none mb-4"
@@ -457,23 +451,23 @@ const GroupHomepage = () => {
                                         {users.map(user => <option key={user} value={user}>{user}</option>)}
                                     </select>
                                     <button type="submit"
-                                            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full mr-4">
+                                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full mr-4">
                                         ADD
                                     </button>
                                 </form>
                             </div>}
 
-                            <hr/>
-                            {(currentUser.role === "admin" || group.admin === currentUser.username)?
+                            <hr />
+                            {(currentUser.role === "admin" || group.admin === currentUser.username) ?
                                 <button
                                     onClick={() => onDeleteGroupBtnClicked(currentUser.username)}
                                     className=" bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
                                     DELETE GROUP
-                                </button>:<button
+                                </button> : <button
                                     onClick={() => onRemoveMemberBtnClicked(currentUser.username)}
                                     className=" mx-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
                                     LEAVE GROUP
-                                </button> }
+                                </button>}
                         </div>
                     </div>
                 </div>

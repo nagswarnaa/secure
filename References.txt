@@ -1,0 +1,6 @@
+References:
+
+	1. https://github.com/aaronwht/EC2
+	2. https://www.youtube.com/watch?v=7vf210p2tJg
+	3. https://github.com/iamNihar07/secure-file-sharing-app
+	4. https://www.youtube.com/watch?v=TkJgvwJERK8

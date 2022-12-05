@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react"
+import React, { useContext, useState, useEffect } from "react"
 import axios from "axios";
 
 const AuthContext = React.createContext()
@@ -9,17 +9,17 @@ export function useAuth() {
     return useContext(AuthContext)
 }
 
-export function AuthProvider({children}) {
+export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
 
 
     const [loading, setLoading] = useState(true)
-    useEffect(()=>{
+    useEffect(() => {
         axios({
             method: "get",
             withCredentials: true,
-            url: host+"/user",
-        }).then ( (res) => {
+            url: host + "/user",
+        }).then((res) => {
             console.log(res)
             setLoading(false)
             setCurrentUser(res.data.user)
@@ -35,15 +35,15 @@ export function AuthProvider({children}) {
                 email: email,
             },
             withCredentials: true,
-            url: host+"/register",
+            url: host + "/register",
         })
     }
 
-    function getAllUsers(){
+    function getAllUsers() {
         return axios({
             method: "GET",
             withCredentials: true,
-            url:host+"/users"
+            url: host + "/users"
         })
     }
 
@@ -56,18 +56,18 @@ export function AuthProvider({children}) {
                 password: password,
             },
             withCredentials: true,
-            url: host+"/login",
+            url: host + "/login",
         })
     }
 
 
-     function getCurrentUser(){
+    function getCurrentUser() {
         return new Promise((resolve, reject) => {
             axios({
                 method: "get",
                 withCredentials: true,
-                url: host+"/user",
-            }).then ( (res) => {
+                url: host + "/user",
+            }).then((res) => {
                 console.log(res)
                 setCurrentUser(res.data.user)
                 resolve()
@@ -79,24 +79,24 @@ export function AuthProvider({children}) {
             method: "POST",
             data: group,
             withCredentials: true,
-            url: host+"/create_group",
+            url: host + "/create_group",
         })
     }
 
-    function getGroup(id){
+    function getGroup(id) {
         return axios({
-            method:"GET",
-            withCredentials:true,
-            url: host+"/group/"+id
+            method: "GET",
+            withCredentials: true,
+            url: host + "/group/" + id
         })
     }
 
-    function deletePostByUser(filename){
+    function deletePostByUser(filename) {
         return axios({
             method: "POST",
-            data: {filename: filename},
+            data: { filename: filename },
             withCredentials: true,
-            url: host+"/delete",
+            url: host + "/delete",
         })
     }
 
@@ -111,57 +111,58 @@ export function AuthProvider({children}) {
         return axios({
             method: "post",
             withCredentials: true,
-            url: host+"/upload",
+            url: host + "/upload",
             data: data,
         })
     }
 
 
-    function getGroups(){
+    function getGroups() {
         return axios({
-            method:"GET",
+            method: "GET",
             withCredentials: true,
-            url: host+"/groups"
+            url: host + "/groups"
         })
     }
 
-    function removeUserFromGroup(data){
-        return axios({
-            method: "POST",
-            data: data,
-            withCredentials: true,
-            url: host+"/delete_member",
-        })
-    }
-
-    function deleteGroup(data){
+    function removeUserFromGroup(data) {
         return axios({
             method: "POST",
             data: data,
             withCredentials: true,
-            url: host+"/delete_group",
+            url: host + "/delete_member",
+        })
+    }
+
+    function deleteGroup(data) {
+        return axios({
+            method: "POST",
+            data: data,
+            withCredentials: true,
+            url: host + "/delete_group",
         })
     }
 
 
 
-    function addMemberToGroup(data){
+    function addMemberToGroup(data) {
         return axios({
             method: "POST",
             data: data,
             withCredentials: true,
-            url: host+"/add_member",
+            url: host + "/add_member",
         })
     }
 
 
 
     async function logout() {
-       await axios({
+        console.log("invoked")
+        await axios({
             method: "post",
             withCredentials: true,
-            url: host+"/logout",
-        }).then ( (res) => {
+            url: host + "/signout",
+        }).then((res) => {
             setCurrentUser(res.data.user)
         })
     }

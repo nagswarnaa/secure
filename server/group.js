@@ -14,7 +14,7 @@ const group = new mongoose.Schema({
     description: String,
     admin: String,
     documents: [Document],
-    members: [{type:String}],
+    members: [{ type: String }],
 });
 
 module.exports = mongoose.model("Group", group);

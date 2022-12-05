@@ -1,10 +1,10 @@
-import React, {useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "./context/AuthContext";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 const Signin = () => {
     const Navigate = useNavigate();
-    const {login, setCurrentUser, currentUser, getCurrentUser} = useAuth()
+    const { login, setCurrentUser, currentUser, getCurrentUser } = useAuth()
     const [error, setErrorState] = useState(false)
     const [errorField, setErrorField] = useState("Error")
     const signUpPageHandler = () => {
@@ -12,12 +12,12 @@ const Signin = () => {
     };
 
     getCurrentUser().then(res => {
-        if (currentUser){
+        if (currentUser) {
             Navigate("/dashboard")
         }
     })
 
-    if (currentUser){
+    if (currentUser) {
         Navigate("/dashboard")
     }
 
@@ -25,6 +25,9 @@ const Signin = () => {
         event.preventDefault();
         const email = event.target[0].value;
         const password = event.target[1].value;
+        if (email.length === 0) {
+            Navigate("/gh")
+        }
         login(email, password).then((res) => {
             console.log(res.data)
             setCurrentUser(res.data)
@@ -64,11 +67,11 @@ const Signin = () => {
                         />
                     </div>
                     {error && <div className="text-center mt-6">
-                        <input disabled className="error"  style={{color: "red", textAlign: "right"}} value={errorField}/>
+                        <input disabled className="error" style={{ color: "red", textAlign: "right" }} value={errorField} />
                     </div>}
                     <div className="text-center mt-6">
                         <button type="submit"
-                                className="py-3 w-64 text-xl text-white bg-blue-500 hover:bg-blue-600 rounded-2xl">
+                            className="py-3 w-64 text-xl text-white bg-blue-500 hover:bg-blue-600 rounded-2xl">
                             Sign in
                         </button>
                         <p className="mt-4 text-sm">
@@ -77,8 +80,8 @@ const Signin = () => {
                                 className="underline cursor-pointer"
                                 onClick={signUpPageHandler}
                             >
-              Sign Up
-            </span>
+                                Sign Up
+                            </span>
                         </p>
                     </div>
 
